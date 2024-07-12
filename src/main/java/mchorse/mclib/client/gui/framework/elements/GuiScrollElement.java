@@ -81,9 +81,10 @@ public class GuiScrollElement extends GuiElement implements IViewport
     @Override
     public boolean mouseClicked(GuiContext context)
     {
-        this.apply(context);
-        boolean result = super.mouseClicked(context);
-        this.unapply(context);
+        if (context.awaitsRightClick && context.mouseButton == 1)
+        {
+            return super.mouseClicked(context);
+        }
 
         if (!this.area.isInside(context))
         {
@@ -99,6 +100,10 @@ public class GuiScrollElement extends GuiElement implements IViewport
         {
             return true;
         }
+
+        this.apply(context);
+        boolean result = super.mouseClicked(context);
+        this.unapply(context);
 
         return result;
     }
